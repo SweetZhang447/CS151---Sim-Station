@@ -1,9 +1,14 @@
 package mvc;
 
 public interface AppFactory {
+
     public Model makeModel();
 
-    public View makeView(Model model);
+    public View makeView(Model m);
+
+    public String[] getEditCommands();
+
+    public Command makeEditCommand(Model model, String type);
 
     public String getTitle();
 
@@ -11,8 +16,4 @@ public interface AppFactory {
 
     public String about();
 
-    public String[] getEditCommands();
-
-    // in subclass, if type of command is not recognized, return null
-    public Command makeEditCommand(Model model, String type);
 }

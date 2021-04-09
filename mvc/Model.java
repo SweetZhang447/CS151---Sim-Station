@@ -1,37 +1,37 @@
 package mvc;
 
-public class Model extends Bean {
-    private String fileName;
-    // when set to true: model has unsaved changes
-    // false: there are no unsaved changes
+import tools.*;
+
+public class Model extends Bean{
+
     private boolean unsavedChanges;
+    private String fileName;
 
-    public Model() {
-        fileName = null;
-        unsavedChanges = false;
+    public Model(){
+        this.unsavedChanges = false;
+        this.fileName = null;
     }
 
-    // Sets flag to true, fires property changed event
-    public void changed() {
-        boolean oldChanged = unsavedChanges;
+    public void changed(){
         unsavedChanges = true;
-        firePropertyChange(null, null, null);
-    }
+        firePropertyChange("unsavedChanges", false , true);
 
-    // Helper methods
-    public void setUnsavedChanges(boolean unsavedChanges) {
-        this.unsavedChanges = unsavedChanges;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getFileName() {
-        return fileName;
     }
 
     public boolean getUnsavedChanges() {
         return unsavedChanges;
     }
+
+    public void setUnsavedChanges(boolean s){
+        this.unsavedChanges= s;
+    }
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String newFile) {
+        fileName= newFile;
+    }
+
+
 }

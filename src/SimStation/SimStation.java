@@ -17,20 +17,8 @@ public class SimStation extends Model {
         this.populate();
     }
 
-    public void suspend(){
-
-    }
-
-    public void resume(){
-
-    }
-
-    public void stop(){
-
-    }
-
     public Agent getNeighbor(Agent a){
-
+        
     }
 
     public void populate(){

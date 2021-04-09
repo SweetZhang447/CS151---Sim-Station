@@ -1,43 +1,39 @@
 package mvc;
 
-import tools.Utilities;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import java.io.*;
 import javax.swing.*;
-//import javax.swing.text.Utilities;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
-public class AppPanel extends JPanel implements ActionListener, PropertyChangeListener {
+public class AppPanel extends JPanel implements PropertyChangeListener, ActionListener {
 
-    protected Model model;
-    protected View view;
-    protected JPanel controlPanel;
     protected AppFactory factory;
+    protected View view;
+    protected Model model;
+    protected JPanel controlPanel;
+    protected JFrame frame;
 
-    private JFrame frame;
     public static int FRAME_WIDTH = 500;
     public static int FRAME_HEIGHT = 300;
 
     public AppPanel(AppFactory factory) {
-        super();
         this.factory = factory;
         model = factory.makeModel();
-        controlPanel = new JPanel();
         view = factory.makeView(model);
+        controlPanel = new JPanel();
 
         setLayout((new GridLayout(1, 2)));
         add(controlPanel);
         add(view);
 
-        controlPanel.setBackground(Color.PINK);
+        controlPanel.setBackground(Color.WHITE);
         view.setBackground(Color.GRAY);
-
-        if(model != null) {
-            model.addPropertyChangeListener(this);
-            model.addPropertyChangeListener(view);
-        }
 
         frame = new JFrame();
         Container cp = frame.getContentPane();
@@ -46,15 +42,17 @@ public class AppPanel extends JPanel implements ActionListener, PropertyChangeLi
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle(factory.getTitle());
         frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+    }
 
-
+    public void display() {
+        frame.setVisible(true);
     }
 
     protected JMenuBar createMenuBar() {
         JMenuBar result = new JMenuBar();
         // add file, edit, and help menus
         JMenu fileMenu =
-                Utilities.makeMenu("File", new String[] {"New",  "Save", "SaveAs", "Open", "Quit"}, this);
+                Utilities.makeMenu("File", new String[]{"New", "Save", "SaveAs", "Open", "Quit"}, this);
         result.add(fileMenu);
 
         JMenu editMenu =
@@ -62,30 +60,50 @@ public class AppPanel extends JPanel implements ActionListener, PropertyChangeLi
         result.add(editMenu);
 
         JMenu helpMenu =
-                Utilities.makeMenu("Help", new String[] {"About", "Help"}, this);
+                Utilities.makeMenu("Help", new String[]{"About", "Help"}, this);
         result.add(helpMenu);
 
         return result;
     }
 
-    public void display() { frame.setVisible(true); }
-
-    public void actionPerformed(ActionEvent ae) {
+    public void actionPerformed(ActionEvent e) {
         try {
-            String cmmd = ae.getActionCommand();
+            String cmmd = e.getActionCommand();
             if (cmmd == "Save") {
-                Utilities.save(model, false);
-            } else if (cmmd == "SaveAs") {
                 Utilities.save(model, true);
+
+            } else if (cmmd == "SaveAs") {
+                //String fName = Utilities.ask("File Name?");
+                String fName = Utilities.getFileName(null, false);
+                ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(fName));
+                os.writeObject(model);
+                os.close();
             } else if (cmmd == "Open") {
-                Model openModel = Utilities.open(model);
-                setModel(openModel);
+                String fName = Utilities.getFileName(null, true);
+                ObjectInputStream is = new ObjectInputStream(new FileInputStream(fName));
+                //model.removePropertyChangeListener(this);
+                model = (Model) is.readObject();
+                //this.model.initSupport();
+                view.addPropertyChangeListener(this);
+                model.addPropertyChangeListener(this);
+                view.update(model);
+                is.close();
+
             } else if (cmmd == "New") {
-                Utilities.saveChanges(model);
-                setModel(factory.makeModel());
-                //model = factory.makeModel();
-                //view.setModel(model);
-                model.setUnsavedChanges(false);
+                // Warns the user of unsaved changes when starting new game
+                if(JOptionPane.showConfirmDialog(frame, "There are unsaved changes. \n" +
+                        "Are you sure you want to start over?", "WARNING", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    // If the user clicks yes
+                    this.remove(view);
+                    model = factory.makeModel();
+                    view = new View(model);
+                    view = factory.makeView(model);
+                    view.update(model);
+                    this.add(view);
+                    view.setBackground(Color.GRAY);
+                    SwingUtilities.updateComponentTreeUI(this);
+                }
+
             } else if (cmmd == "Quit") {
                 Utilities.saveChanges(model);
                 System.exit(1);
@@ -94,34 +112,20 @@ public class AppPanel extends JPanel implements ActionListener, PropertyChangeLi
             } else if (cmmd == "Help") {
                 Utilities.inform(factory.getHelp());
             } else {
-                //Utilities.error("Unrecognized command: " + cmmd);
-                // from the edit menu
                 Command command = factory.makeEditCommand(model, cmmd);
                 command.execute();
             }
-        } catch(Exception e) {
-            handleException(e);
+        } catch (Exception err) {
+            handleException(err);
         }
+    }
+
+    // IFFY
+    public void propertyChange(PropertyChangeEvent evt) {
+        updateUI();
     }
 
     protected void handleException(Exception e) {
         Utilities.error(e);
-    }
-
-    public void propertyChange(PropertyChangeEvent evt) {
-
-    }
-
-    public Model getModel() {
-        return model;
-    }
-
-    public void setModel(Model m) {
-        this.model.removePropertyChangeListener(this);
-        this.model = m;
-        this.model.initSupport();
-        this.model.addPropertyChangeListener(this);
-        view.setModel(this.model);
-        model.changed();
     }
 }

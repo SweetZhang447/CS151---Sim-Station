@@ -1,24 +1,28 @@
 package mvc;
 
+
 import javax.swing.*;
-import java.beans.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class View extends JPanel implements PropertyChangeListener {
+
     protected Model model;
 
-    public View(Model model){
-        this.model=model;
+    public View(Model model) {
+        this.model = model;
         model.addPropertyChangeListener(this);
     }
 
-    public void setModel(Model model) {
-        this.model.removePropertyChangeListener(this);
-        this.model = model;
-        this.model.initSupport();
-        this.model.addPropertyChangeListener(this);
+    public void update(Model m) {
+        this.removePropertyChangeListener(this);
+        m.initSupport(); // this calls the bean's initSupport method
+        model = m;
+        model.addPropertyChangeListener(this);
     }
 
-    public void propertyChange(PropertyChangeEvent arg0) {
+    // Tells you model has been modify
+    public void propertyChange(PropertyChangeEvent evt) {
         repaint();
     }
 }

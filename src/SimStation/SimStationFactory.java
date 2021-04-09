@@ -9,15 +9,15 @@ import java.io.Serializable;
 
 public class SimStationFactory implements AppFactory, Serializable {
     public Model makeModel() {
-        return null;
+        return new SimStation();
     }
 
     public View makeView(Model model) {
-        return null;
+        return new SimStationView((SimStation) model);
     }
 
     public String getTitle() {
-        return null;
+        return "SimStation";
     }
 
     public String[] getHelp() {
@@ -29,10 +29,28 @@ public class SimStationFactory implements AppFactory, Serializable {
     }
 
     public String[] getEditCommands() {
-        return new String[0];
+        return new String[]{"Start", "Suspend", "Resume", "Stop", "Stats"};
     }
 
     public Command makeEditCommand(Model model, String type) {
+
+        switch (type) {
+            case "Start": {
+                return new StartCommand(model);
+            }
+            case "Suspend": {
+                return new SuspendCommand(model);
+            }
+            case "Resume": {
+                return new ResumeCommand(model);
+            }
+            case "Stop": {
+                return new StopCommand(model);
+            }
+            case "Stats": {
+                return new StatsCommand(model);
+            }
+        }
         return null;
     }
 }

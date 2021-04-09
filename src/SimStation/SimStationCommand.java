@@ -11,7 +11,8 @@ public class SimStationCommand extends Command {
     }
 
     public void execute() {
-        SimStation station = (SimStation)model;
+        Simulation station = (Simulation)model;
+        //station.setState(cmmd);
     }
 
 

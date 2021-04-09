@@ -33,6 +33,7 @@ public class SimStationFactory implements AppFactory, Serializable {
     }
 
     public Command makeEditCommand(Model model, String type) {
+
         switch (type) {
             case "Start": {
                 return new StartCommand(model);

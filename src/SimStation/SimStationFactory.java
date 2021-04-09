@@ -35,19 +35,19 @@ public class SimStationFactory implements AppFactory, Serializable {
     public Command makeEditCommand(Model model, String type) {
         switch (type) {
             case "Start": {
-                return new StartCommand(model, "Start");
+                return new StartCommand(model);
             }
             case "Suspend": {
-                return new SuspendCommand(model, "Suspend");
+                return new SuspendCommand(model);
             }
             case "Resume": {
-                return new ResumeCommand(model, "Resume");
+                return new ResumeCommand(model);
             }
             case "Stop": {
-                return new StopCommand(model, "Stop");
+                return new StopCommand(model);
             }
             case "Stats": {
-                return new StatsCommand(model, "Stats");
+                return new StatsCommand(model);
             }
         }
         return null;

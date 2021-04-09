@@ -9,15 +9,15 @@ import java.io.Serializable;
 
 public class SimStationFactory implements AppFactory, Serializable {
     public Model makeModel() {
-        return new SimStation();
+        return new Simulation();
     }
 
     public View makeView(Model model) {
-        return new SimStationView((SimStation) model);
+        return new SimStationView((Simulation) model);
     }
 
     public String getTitle() {
-        return "SimStation";
+        return "Simulation";
     }
 
     public String[] getHelp() {

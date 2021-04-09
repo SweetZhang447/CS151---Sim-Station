@@ -10,7 +10,7 @@ public class StatsCommand extends Command {
     }
 
     public void execute() throws Exception {
-        SimStation station = (SimStation) model;
+        Simulation station = (Simulation) model;
         station.Stats();
     }
 

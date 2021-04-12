@@ -78,6 +78,11 @@ public abstract class Agent implements Serializable, Runnable {
             System.out.println(e);
         }
     }
+
+    public synchronized void join() throws InterruptedException {
+        if (myThread != null) myThread.join();
+    }
+
     public abstract void update();
 
 }

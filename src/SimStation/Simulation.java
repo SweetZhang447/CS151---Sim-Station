@@ -9,6 +9,7 @@ public class Simulation extends Model {
     private ArrayList<Agent> list;   // List of agents
     private int clock;
     private int numberOfAgents;
+    public static int SIZE = 250;
 
     public Simulation() {
         list = new ArrayList<>();
@@ -37,9 +38,7 @@ public class Simulation extends Model {
 
     }
 
-    public void populate() {
-
-    }
+    public void populate() { }
 
     // I think you can do this in the StatsCommand class
     // since it just returns a message on the GUI regarding

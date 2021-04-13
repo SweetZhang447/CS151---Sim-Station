@@ -15,7 +15,7 @@ public abstract class Agent implements Serializable, Runnable {
     private int yc;
     private boolean suspend;
     private boolean stopped;
-    private AgentState state;
+    //private AgentState state;
     private Thread myThread;
     private Simulation world;
 
@@ -24,7 +24,7 @@ public abstract class Agent implements Serializable, Runnable {
         this.world = world;
         this.xc = xc;
         this.yc = yc;
-        this.state = state;
+        //this.state = state;
         this.myThread = null;
         this.stopped = false;
         this.suspend = false;
@@ -36,45 +36,38 @@ public abstract class Agent implements Serializable, Runnable {
         this.world = world;
         this.xc = xc;
         this.yc = yc;
-        this.state = AgentState.READY;
+        //this.state = AgentState.READY;
         this.myThread = null;
         this.stopped = false;
         this.suspend = false;
     }
 
-    // uhhhhh
-    public void setState(AgentState state) { this.state = state;}
+    /******************Thread stuff******************/
+    public synchronized void stop(){ this.stopped = true; }
 
-    public synchronized void stop(){
-//        if(this.state == AgentState.RUNNING){
-//            this.state = AgentState.STOPPED;
-//        }
-        this.state = AgentState.STOPPED;
-        this.stopped = true;
-    }
-
-    public synchronized void start(){this.state = AgentState.READY;}
+    public synchronized void start(){ run();}//this.state = AgentState.READY;}
 
     public synchronized boolean isStopped(){return this.stopped;}
 
-    public synchronized void suspend(){
-        this.state = AgentState.SUSPEND;
-        this.suspend = true;
-    }
+    public synchronized void suspend(){ this.suspend = true; }
 
     public synchronized boolean isSuspend(){return this.suspend;}
 
     public synchronized void resume(){ notify(); }
 
     public synchronized void join() throws InterruptedException {
-        if (myThread != null) myThread.join();
+        try{
+            if (myThread != null) myThread.join();
+        }catch(InterruptedException e){
+            System.out.println(e);
+        }
     }
 
     private synchronized void checkSuspended() {
         try {
             while(!isStopped() && isSuspend()) {
                 wait();
-                this.state = AgentState.SUSPEND;
+                //this.state = AgentState.SUSPEND;
                 this.suspend = false;
             }
         } catch (InterruptedException e) {
@@ -83,12 +76,12 @@ public abstract class Agent implements Serializable, Runnable {
     }
 
     public void run(){
-        this.state = AgentState.RUNNING;
-        myThread = Thread.currentThread();
+        myThread = Thread.currentThread();  //catch the current thread
         while (!isStopped()) {
             try {
                 update();
-                Thread.sleep(1000);
+                Thread.sleep(2000);
+//                Thread.sleep(1000);
                 checkSuspended();
             } catch(InterruptedException e) {
                 System.err.println(e);
@@ -96,9 +89,31 @@ public abstract class Agent implements Serializable, Runnable {
         }
     }
 
+    //Need to override
     public abstract void update();
 
+    //this function is called to check if any other Agent is around
+    public double distance(Agent other){
+        return Math.sqrt(Math.pow((this.getXc()- other.getXc()), 2) + Math.pow((this.getYc()- other.getYc()), 2));
+    }
+
+    /******************Getter******************/
+    public String getName() { return name; }
+
+    public int getXc() { return xc; }
+
+    public int getYc() { return yc; }
+
+    /******************Setter******************/
+    //public void setState(AgentState state) { this.state = state;}
+
     public void setDirection(Heading direction){this.headTo = direction;}
+
+    public void setName(String name) { this.name = name; }
+
+    public void setXc(int xc) { this.xc = xc; }
+
+    public void setYc(int yc) { this.yc = yc; }
 
     public void move(int steps){
         while(steps > 0){
@@ -117,30 +132,7 @@ public abstract class Agent implements Serializable, Runnable {
 
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getXc() {
-        return xc;
-    }
-
-    public void setXc(int xc) {
-        this.xc = xc;
-    }
-
-    public int getYc() {
-        return yc;
-    }
-
-    public void setYc(int yc) {
-        this.yc = yc;
-    }
-
+    /******************Helper functions for move******************/
     private void moveSouth(){
         //this if block will wrap around if out of bound
         if(getYc() == world.SIZE){

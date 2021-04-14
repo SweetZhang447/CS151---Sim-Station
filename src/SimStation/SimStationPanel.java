@@ -4,6 +4,7 @@ import mvc.AppFactory;
 import mvc.AppPanel;
 
 import javax.swing.*;
+import java.awt.*;
 
 // Controller: executes user commands by updating the model
 public class SimStationPanel extends AppPanel {
@@ -26,6 +27,7 @@ public class SimStationPanel extends AppPanel {
         Stop.addActionListener(this);
         Stats.addActionListener(this);
         // Add newly created buttons to the button panel
+        controlPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 70, 15));
         controlPanel.add(Start);
         controlPanel.add(Suspend);
         controlPanel.add(Resume);

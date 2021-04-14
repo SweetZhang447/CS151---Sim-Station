@@ -1,9 +1,11 @@
 package SimStation;
 
-import mvc.Model;
+import mvc.*;
 
-public class SimStationView extends mvc.View {
+public class SimStationView extends View {
+    private Simulation station;
     public SimStationView(Model model) {
         super(model);
+        station = (Simulation) model;
     }
 }

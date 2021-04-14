@@ -1,5 +1,7 @@
 package SimStation;
 
+import mvc.Utilities;
+
 import java.io.Serializable;
 
 // NOTE: (Sweet + Jalen)
@@ -10,25 +12,25 @@ import java.io.Serializable;
 public abstract class Agent implements Serializable, Runnable {
 
     private String name;
-    private Heading headTo;
+    protected Heading headTo;
     private int xc;
     private int yc;
     private boolean suspend;
     private boolean stopped;
     //private AgentState state;
     private Thread myThread;
-    private Simulation world;
+    protected Simulation world;
 
-    public Agent(String name, Simulation world, int xc, int yc, AgentState state) {
-        this.name = name;
-        this.world = world;
-        this.xc = xc;
-        this.yc = yc;
-        //this.state = state;
-        this.myThread = null;
-        this.stopped = false;
-        this.suspend = false;
-    }
+//    public Agent(String name, Simulation world, int xc, int yc, AgentState state) {
+//        this.name = name;
+//        this.world = world;
+//        this.xc = xc;
+//        this.yc = yc;
+//        //this.state = state;
+//        this.myThread = null;
+//        this.stopped = false;
+//        this.suspend = false;
+//    }
 
     //Agent at READY state when first created
     public Agent(String name , Simulation world, int xc, int yc){
@@ -42,10 +44,13 @@ public abstract class Agent implements Serializable, Runnable {
         this.suspend = false;
     }
 
+    public Agent(){
+        this("", new Simulation(), Utilities.rng.nextInt(world.SIZE),Utilities.rng.nextInt(world.SIZE));
+    }
     /******************Thread stuff******************/
     public synchronized void stop(){ this.stopped = true; }
 
-    public synchronized void start(){ run();}//this.state = AgentState.READY;}
+    //public synchronized void start(){ }//run();}
 
     public synchronized boolean isStopped(){return this.stopped;}
 
@@ -139,6 +144,7 @@ public abstract class Agent implements Serializable, Runnable {
             this.yc = 0;
         }
         this.yc ++;
+//        this.world.changed();
     }
 
     private void moveNorth(){
@@ -164,6 +170,14 @@ public abstract class Agent implements Serializable, Runnable {
         }
         this.xc ++;
     }
+
+    //onStart, onStopped, onResume: empty no-op Override these in customizations
+    /******************No-op need to override******************/
+    public void onStart(){}
+
+    public void onStopped(){}
+
+    public void onResume(){}
 
 }
 

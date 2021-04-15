@@ -29,8 +29,12 @@ class RandomWalkFactory extends SimStationFactory {
 class RandomWalkSimulation extends Simulation {
 
     public void populate() {
+        System.out.println("Populated");
         for(int i = 0; i < 15; i++)
             addAgent(new Drunk());
+        for(Agent a: this.getList()){
+            System.out.println(a instanceof Drunk);
+        }
     }
 
     public static void main(String[] args) {

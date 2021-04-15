@@ -50,7 +50,8 @@ class FlockingSimulation extends Simulation {
     }
 
     public void Stats() {
-
+        //Check how many !bird.isStopped() and their speed then put into string[]
+        //Utilities.inform(string[])
     }
 
 }

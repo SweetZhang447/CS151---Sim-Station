@@ -19,7 +19,7 @@ public abstract class Agent implements Serializable, Runnable {
     private boolean stopped;
     //private AgentState state;
     private Thread myThread;
-    protected Simulation world;
+    protected Simulation world = new Simulation();
 
 //    public Agent(String name, Simulation world, int xc, int yc, AgentState state) {
 //        this.name = name;
@@ -45,7 +45,7 @@ public abstract class Agent implements Serializable, Runnable {
     }
 
     public Agent(){
-        this("", new Simulation(), Utilities.rng.nextInt(world.SIZE),Utilities.rng.nextInt(world.SIZE));
+        this("", new Simulation(), Utilities.rng.nextInt(Simulation.SIZE),Utilities.rng.nextInt(Simulation.SIZE));
     }
     /******************Thread stuff******************/
     public synchronized void stop(){ this.stopped = true; }
@@ -109,6 +109,8 @@ public abstract class Agent implements Serializable, Runnable {
 
     public int getYc() { return yc; }
 
+    public Heading getDirection(){return this.headTo;}
+
     /******************Setter******************/
     //public void setState(AgentState state) { this.state = state;}
 
@@ -140,7 +142,7 @@ public abstract class Agent implements Serializable, Runnable {
     /******************Helper functions for move******************/
     private void moveSouth(){
         //this if block will wrap around if out of bound
-        if(getYc() == world.SIZE){
+        if(getYc() == Simulation.SIZE){
             this.yc = 0;
         }
         this.yc ++;
@@ -150,7 +152,7 @@ public abstract class Agent implements Serializable, Runnable {
     private void moveNorth(){
         //this if block will wrap around if out of bound
         if(getYc() == 0){
-            this.yc = world.SIZE;
+            this.yc = Simulation.SIZE;
         }
         this.yc --;
     }
@@ -158,14 +160,14 @@ public abstract class Agent implements Serializable, Runnable {
     private void moveWest(){
         //this if block will wrap around if out of bound
         if(getXc() == 0){
-            this.xc = world.SIZE;
+            this.xc = Simulation.SIZE;
         }
         this.xc --;
     }
 
     private void moveEast(){
         //this if block will wrap around if out of bound
-        if(getXc() == world.SIZE){
+        if(getXc() == Simulation.SIZE){
             this.xc = 0;
         }
         this.xc ++;

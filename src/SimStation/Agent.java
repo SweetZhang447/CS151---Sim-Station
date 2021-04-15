@@ -19,7 +19,7 @@ public abstract class Agent implements Serializable, Runnable {
     private boolean stopped;
     //private AgentState state;
     private Thread myThread;
-    protected Simulation world = new Simulation();
+    protected Simulation world ;//= new Simulation();
 
 //    public Agent(String name, Simulation world, int xc, int yc, AgentState state) {
 //        this.name = name;

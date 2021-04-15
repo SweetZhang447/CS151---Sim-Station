@@ -69,6 +69,10 @@ public class Simulation extends Model {
         return neighbor;
     }
 
+    public ArrayList<Agent> getList() {
+        return this.agentsLists;
+    }
+
     public void addAgent(Agent newAgent){ this.agentsLists.add(newAgent); }
 
 

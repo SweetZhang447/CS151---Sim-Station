@@ -30,10 +30,11 @@ class RandomWalkSimulation extends Simulation {
 
     public void populate() {
         System.out.println("Populated");
-        for(int i = 0; i < 15; i++)
+        for(int i = 0; i < 15; i++) {
             addAgent(new Drunk());
+        }
         for(Agent a: this.getList()){
-            System.out.println(a instanceof Drunk);
+            System.out.println(a instanceof Drunk );
         }
     }
 

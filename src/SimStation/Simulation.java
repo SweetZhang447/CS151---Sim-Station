@@ -3,7 +3,9 @@ package SimStation;
 import mvc.Model;
 import mvc.Utilities;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Simulation extends Model {
 
@@ -25,7 +27,7 @@ public class Simulation extends Model {
         clock = 0;
         this.populate();
 
-        for(Agent a : agentsLists){
+        for (Agent a : agentsLists) {
             Thread thread = new Thread(a);
             thread.start(); //start will call run method.
         }
@@ -33,17 +35,23 @@ public class Simulation extends Model {
     }
 
     public synchronized void Suspend() {
-        for(Agent a: agentsLists){ a.suspend(); }
+        for (Agent a : agentsLists) {
+            a.suspend();
+        }
         stopTimer();
     }
 
     public synchronized void Resume() {
-        for(Agent a: agentsLists){ a.resume(); }
+        for (Agent a : agentsLists) {
+            a.resume();
+        }
         startTimer();
     }
 
     public void Stop() {
-        for(Agent a: agentsLists){ a.stop(); }
+        for (Agent a : agentsLists) {
+            a.stop();
+        }
         stopTimer();
     }
 
@@ -53,14 +61,14 @@ public class Simulation extends Model {
         boolean found = false;
         int i = Utilities.rng.nextInt(agentsLists.size());
         int begin = i;
-        while(!found){
+        while (!found) {
             Agent potential = agentsLists.get(i);
-            if(potential != thisAgent && !potential.isStopped() && thisAgent.distance(potential) < radius){
+            if (potential != thisAgent && !potential.isStopped() && thisAgent.distance(potential) < radius) {
                 neighbor = agentsLists.get(i);
                 found = true;
-            }else{
-                i = (i+1) % agentsLists.size();
-                if(i == begin){
+            } else {
+                i = (i + 1) % agentsLists.size();
+                if (i == begin) {
                     break;
                 }
             }
@@ -75,10 +83,16 @@ public class Simulation extends Model {
 
     public void addAgent(Agent newAgent){ this.agentsLists.add(newAgent); }
 
+//    public void addAgent(Agent newAgent) {
+//        this.agentsLists.add(newAgent);
+//    }
+
+
 
     /******************No-op need to override******************/
     //Need to override
-    public void populate() { }
+    public void populate() {
+    }
 
     // I think you can do this in the StatsCommand class
     // since it just returns a message on the GUI regarding
@@ -90,7 +104,8 @@ public class Simulation extends Model {
     //Number of alive agent(!isStopped) 1
     //Values of clock 2
     //1,2 is in an array of String.
-    public void Stats() { }
+    public void Stats() {
+    }
 
 
     /******************Clock Stuff******************/

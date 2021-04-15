@@ -14,7 +14,6 @@ public class SimStationView extends View {
     public SimStationView(Model station) {
         super(station);
 
-    }
 
     public void paintComponent(Graphics gc) {
         super.paintComponent(gc);
@@ -25,5 +24,4 @@ public class SimStationView extends View {
         }
 
     }
-
 }

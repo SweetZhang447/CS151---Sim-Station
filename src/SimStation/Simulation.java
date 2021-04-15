@@ -81,9 +81,12 @@ public class Simulation extends Model {
         return this.agentsLists;
     }
 
+    public void addAgent(Agent newAgent){ this.agentsLists.add(newAgent); }
+
     public void addAgent(Agent newAgent) {
         this.agentsLists.add(newAgent);
     }
+
 
 
     /******************No-op need to override******************/

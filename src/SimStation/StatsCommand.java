@@ -11,6 +11,7 @@ public class StatsCommand extends Command {
 
     public void execute() throws Exception {
         Simulation station = (Simulation) model;
+        System.out.println("Test Stats");
         station.Stats();
     }
 

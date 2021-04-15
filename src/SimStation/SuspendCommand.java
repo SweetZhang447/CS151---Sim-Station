@@ -11,6 +11,7 @@ public class SuspendCommand extends Command {
 
     public void execute() throws Exception {
         Simulation station = (Simulation) model;
+        System.out.println("Test Suspend");
         station.Suspend();
     }
 

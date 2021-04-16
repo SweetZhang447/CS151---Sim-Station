@@ -1,8 +1,6 @@
 package flocking;
 import mvc.*;
 import SimStation.*;
-//import randomwalk.Drunk;
-//import randomwalk.RandomWalkFactory;
 
 class Bird extends Agent {
     private int speed;
@@ -10,7 +8,7 @@ class Bird extends Agent {
     public Bird() {
         super();
         headTo = Heading.random();
-        //speed = Random int from 1-5
+        speed = Utilities.rng.nextInt(6) + 1;
     }
 
     public int getSpeed() { return speed; }
@@ -19,39 +17,39 @@ class Bird extends Agent {
 
     public void update() {
         Bird neighbor = (Bird) this.world.getNeighbor(this,10);    //10 is current a random number, we can change it later on
-        this.setDirection(neighbor.getDirection());
-        this.setSpeed(neighbor.getSpeed());
+        if(neighbor != null){
+            this.setDirection(neighbor.getDirection());
+            this.setSpeed(neighbor.getSpeed());
+        }
+
         int steps = this.getSpeed();
         move(steps);
     }
 
 }
 
-//class RandomWalkSimulation extends Simulation {
-//
-//    public void populate() {
-//        for(int i = 0; i < 15; i++)
-//            addAgent(new Drunk());
-//    }
-//
-//    public static void main(String[] args) {
-//        AppPanel panel = new SimStationPanel(new RandomWalkFactory());
-//        panel.display();
-//    }
-//
-//}
+
+class FlockingFactory extends SimStationFactory {
+    public Model makeModel() { return new FlockingSimulation(); }
+    public String getTitle() { return "Flocking";}
+}
 
 class FlockingSimulation extends Simulation {
     public void populate(){
         //We can change 30 into something else
         for(int i = 0; i < 30; i++){
-            this.addAgent(new Bird());
+            addAgent(new Bird());
         }
     }
 
-    public void Stats() {
-        //Check how many !bird.isStopped() and their speed then put into string[]
-        //Utilities.inform(string[])
+//    public void Stats() {
+//        //Check how many !bird.isStopped() and their speed then put into string[]
+//        //Utilities.inform(string[])
+//    }
+
+    public static void main(String[] args) {
+        AppPanel panel = new SimStationPanel(new FlockingFactory());
+        panel.display();
     }
 
 }

@@ -11,7 +11,6 @@ public class Simulation extends Model {
 
     private ArrayList<Agent> agentsLists;   // List of agents SHOULD CHANGE THE NAME
     private int clock;
-    //private int numberOfAgents;
     public static int SIZE = 250;   //this should be the bound for Agent to wrap around ???
     private Timer timer;
 
@@ -23,10 +22,8 @@ public class Simulation extends Model {
 
     /******************Thread Stuff******************/
     public void Start() {
-        agentsLists = new ArrayList<Agent>();
         clock = 0;
         this.populate();
-
         for (Agent a : agentsLists) {
             Thread thread = new Thread(a);
             thread.start(); //start will call run method.
@@ -39,6 +36,7 @@ public class Simulation extends Model {
             a.suspend();
         }
         stopTimer();
+
     }
 
     public synchronized void Resume() {
@@ -46,6 +44,7 @@ public class Simulation extends Model {
             a.resume();
         }
         startTimer();
+
     }
 
     public void Stop() {
@@ -81,13 +80,19 @@ public class Simulation extends Model {
         return this.agentsLists;
     }
 
-    public void addAgent(Agent newAgent){ this.agentsLists.add(newAgent); }
+    //Adding newAgent into this Simulation
+    public synchronized void addAgent(Agent newAgent) {
+        this.agentsLists.add(newAgent);
+        //We missed the line below.
+        //This will make sure the newAgent know which world it is into. -Can
+        newAgent.setWorld(this);
+    }
 
-//    public void addAgent(Agent newAgent) {
-//        this.agentsLists.add(newAgent);
-//    }
-
-
+    //Remove rmAgent out of this Simulation
+    public synchronized void removeAgent(Agent rmAgent) {
+        this.agentsLists.remove(rmAgent);
+        rmAgent.stop();
+    }
 
     /******************No-op need to override******************/
     //Need to override
@@ -105,8 +110,9 @@ public class Simulation extends Model {
     //Values of clock 2
     //1,2 is in an array of String.
     public void Stats() {
+        String[] infor = {"#agents: "+this.agentsLists.size(), "clock: "+this.clock};
+        Utilities.inform(infor);
     }
-
 
     /******************Clock Stuff******************/
 

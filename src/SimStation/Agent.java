@@ -85,8 +85,8 @@ public abstract class Agent implements Serializable, Runnable {
         while (!isStopped()) {
             try {
                 update();
-                Thread.sleep(2000);
-//                Thread.sleep(1000);
+                Thread.sleep(20);
+
                 checkSuspended();
             } catch(InterruptedException e) {
                 System.err.println(e);
@@ -122,6 +122,8 @@ public abstract class Agent implements Serializable, Runnable {
 
     public void setYc(int yc) { this.yc = yc; }
 
+    public void setWorld(Simulation newWorld){this.world = newWorld; }
+
     public void move(int steps){
         while(steps > 0){
             if(this.headTo == Heading.SOUTH){
@@ -146,7 +148,6 @@ public abstract class Agent implements Serializable, Runnable {
             this.yc = 0;
         }
         this.yc ++;
-//        this.world.changed();
     }
 
     private void moveNorth(){

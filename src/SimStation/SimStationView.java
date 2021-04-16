@@ -1,9 +1,9 @@
 package SimStation;
 
-import mvc.Model;
 import mvc.View;
 
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 
 public class SimStationView extends View {
@@ -11,18 +11,22 @@ public class SimStationView extends View {
     private ArrayList<Agent> viewList;
 
 
-    public SimStationView(Model station) {
+    public SimStationView(Simulation station) {
         super(station);
+        this.station = (Simulation) station;
+        viewList = station.getList();
     }
 
-
-        public void paintComponent(Graphics gc) {
-            super.paintComponent(gc);
-            Simulation station = (Simulation) model;
-            viewList = station.getList();
-            for (Agent agent : viewList) {
-                gc.fillRect(7, 7, agent.getXc(), agent.getYc());
-            }
-
+    public void paintComponent(Graphics gc) {
+        super.paintComponent(gc);
+        gc.setColor(Color.WHITE);
+        for (Agent agent : viewList) {
+            gc.fillRect(agent.getXc(), agent.getYc(), 7, 7);
         }
     }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        repaint();
+    }
+}

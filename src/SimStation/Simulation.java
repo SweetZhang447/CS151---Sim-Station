@@ -22,8 +22,9 @@ public class Simulation extends Model {
 
     /******************Thread Stuff******************/
     public void Start() {
+        agentsLists.clear();    //this will solve restart problem - Can
         clock = 0;
-        this.populate();
+        populate();
         for (Agent a : agentsLists) {
             Thread thread = new Thread(a);
             thread.start(); //start will call run method.
@@ -50,6 +51,7 @@ public class Simulation extends Model {
     public void Stop() {
         for (Agent a : agentsLists) {
             a.stop();
+
         }
         stopTimer();
     }
@@ -89,9 +91,10 @@ public class Simulation extends Model {
     }
 
     //Remove rmAgent out of this Simulation
-    public synchronized void removeAgent(Agent rmAgent) {
-        this.agentsLists.remove(rmAgent);
+    public  void removeAgent(Agent rmAgent) {
         rmAgent.stop();
+        this.agentsLists.remove(rmAgent);
+
     }
 
     /******************No-op need to override******************/
@@ -114,6 +117,7 @@ public class Simulation extends Model {
         Utilities.inform(infor);
     }
 
+    public int getClock(){return this.clock;}
     /******************Clock Stuff******************/
 
     private void startTimer() {

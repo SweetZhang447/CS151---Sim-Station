@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class SimStationView extends View {
     private Simulation station;
-    private ArrayList<Agent> viewList;
+    protected ArrayList<Agent> viewList;
 
 
     public SimStationView(Simulation station) {

@@ -29,7 +29,7 @@ class Person extends Agent {
     }
 
     public void update() {
-        Plague.Person neighbor = (Plague.Person) this.world.getNeighbor(this, 6);    //10 is current a random number, we can change it later on
+        Plague.Person neighbor = (Plague.Person) this.world.getNeighbor(this, 10);    //10 is current a random number, we can change it later on
 
         if (neighbor != null && neighbor.isInfected() && Math.random() * 100 > RESISTANCE) {
             this.setInfected(true);
@@ -58,7 +58,7 @@ class PlagueFactory extends SimStationFactory {
 
 class PlagueSimulation extends Simulation {
     public static int VIRULENCE = 50; // % chance of infection
-    
+
     public void populate() {
         //Start with 50 agents
         for (int i = 0; i < 50; i++) {

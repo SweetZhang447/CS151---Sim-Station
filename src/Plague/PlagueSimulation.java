@@ -9,6 +9,7 @@ import mvc.View;
 import java.util.HashMap;
 import java.util.Map;
 
+// Jalen's code - works well
 //class Person extends Agent {
 //    public static int RESISTANCE = 2; // % chance of resisting infection
 //    private final int speed = 1;
@@ -53,6 +54,7 @@ class PlagueFactory extends SimStationFactory {
 
 }
 
+// Jalen's code -  works well
 //class PlagueSimulation extends Simulation {
 //    //public static int VIRULENCE = 50; // % chance of infection
 //    public static int INITIAL_INFECTED = 10;    //Initial %
@@ -108,13 +110,13 @@ class PlagueFactory extends SimStationFactory {
 //    }
 //}
 
-class Person extends Agent{
+class Person extends Agent {
     public static int RESISTANCE = 2;
     public static int VIRULENCE = 10;   //Radius
     private boolean infected;
     private int resistence;
 
-    public Person(){
+    public Person() {
         super();
         headTo = Heading.random();
         int randomValue = Utilities.rng.nextInt(100);
@@ -122,19 +124,21 @@ class Person extends Agent{
         this.infected = randomValue < PlagueSimulation.INITIAL_INFECTED;
     }
 
-    public synchronized boolean isInfected(){return this.infected;}
+    public synchronized boolean isInfected() {
+        return this.infected;
+    }
 
-    public synchronized void infect(){
-        if(!this.isInfected()){
+    public synchronized void infect() {
+        if (!this.isInfected()) {
             int randomValue = Utilities.rng.nextInt(100);
             this.infected = this.resistence < randomValue;
         }
     }
 
-    public void update(){
-        if(this.isInfected()){
+    public void update() {
+        if (this.isInfected()) {
             Person neighbor = (Person) this.world.getNeighbor(this, VIRULENCE);
-            if(neighbor != null && !neighbor.isInfected()){
+            if (neighbor != null && !neighbor.isInfected()) {
                 neighbor.infect();
             }
         }

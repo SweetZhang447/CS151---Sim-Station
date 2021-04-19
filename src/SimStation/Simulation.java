@@ -9,15 +9,14 @@ import java.util.TimerTask;
 
 public class Simulation extends Model {
 
-    private ArrayList<Agent> agentsLists;   // List of agents SHOULD CHANGE THE NAME
+    private ArrayList<Agent> agentsLists;   // List of agents
     private int clock;
-    public static int SIZE = 250;   //this should be the bound for Agent to wrap around ???
+    public static int SIZE = 250;   //this should be the bound for Agent to wrap around
     private Timer timer;
 
     public Simulation() {
         agentsLists = new ArrayList<>();
         clock = 0;
-        //numberOfAgents = 0;
     }
 
     /******************Thread Stuff******************/
@@ -91,7 +90,7 @@ public class Simulation extends Model {
     }
 
     //Remove rmAgent out of this Simulation
-    public  void removeAgent(Agent rmAgent) {
+    public void removeAgent(Agent rmAgent) {
         rmAgent.stop();
         this.agentsLists.remove(rmAgent);
 
@@ -113,11 +112,14 @@ public class Simulation extends Model {
     //Values of clock 2
     //1,2 is in an array of String.
     public void Stats() {
-        String[] infor = {"#agents: "+this.agentsLists.size(), "clock: "+this.clock};
+        String[] infor = {"#agents: " + this.agentsLists.size(), "clock: " + this.clock};
         Utilities.inform(infor);
     }
 
-    public int getClock(){return this.clock;}
+    public int getClock() {
+        return this.clock;
+    }
+
     /******************Clock Stuff******************/
 
     private void startTimer() {

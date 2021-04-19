@@ -11,7 +11,6 @@ public class StopCommand extends Command {
 
     public void execute() throws Exception {
         Simulation station = (Simulation) model;
-        System.out.println("Test Stop");
         station.Stop();
     }
 

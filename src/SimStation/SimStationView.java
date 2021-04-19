@@ -6,6 +6,7 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 
+//Sweet - 4/16 - view wasn't showing up?
 public class SimStationView extends View {
     private Simulation station;
     protected ArrayList<Agent> viewList;

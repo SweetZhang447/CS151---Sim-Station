@@ -11,7 +11,6 @@ public class StartCommand extends Command {
 
     public void execute() throws Exception {
         Simulation station = (Simulation) model;
-        System.out.println("Test Start");
         station.Start();
     }
 }

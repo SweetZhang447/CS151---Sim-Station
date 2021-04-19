@@ -41,10 +41,6 @@ public class Prisoner extends Agent {
         return partnerCheated;
     }
 
-    public Prisoner getPrisoner() {
-        return this;
-    }
-
     public void update() {
         // Gets random neighbor, sets bounds to be whole board size
         Prisoner neighbor = (Prisoner) this.world.getNeighbor(this, 250);
